@@ -116,5 +116,103 @@ namespace CarDealer.Controllers
             ViewBag.SalesPersonId = new SelectList(_context.SalesPerson, "SalesPersonId", "Name", carPurchase.SalesPersonId);
             return View(carPurchase);
         }
+
+        // GET: CarPurchases/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var carPurchase = await _context.CarPurchase.FindAsync(id);
+            if (carPurchase == null)
+            {
+                return NotFound();
+            }
+            var (car, customer) = GetCarAndCustomerInfo();
+
+            ViewBag.CarId = new SelectList(car, "CarId", "Name", carPurchase.CarId);
+            ViewBag.CustomerId = new SelectList(customer, "CustomerId", "Name", carPurchase.CustomerId);
+            ViewBag.SalesPersonId = new SelectList(_context.SalesPerson, "SalesPersonId", "Name", carPurchase.SalesPersonId);
+            return View(carPurchase);
+        }
+
+        // POST: CarPurchases/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("CarPurchaseId,CustomerId,CarId,OrderDate,PricePaid,SalesPersonId")] CarPurchase carPurchase)
+        {
+            if (id != carPurchase.CarPurchaseId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(carPurchase);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CarPurchaseExists(carPurchase.CarPurchaseId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            var (car, customer) = GetCarAndCustomerInfo();
+
+            ViewBag.CarId = new SelectList(car, "CarId", "Name", carPurchase.CarId);
+            ViewBag.CustomerId = new SelectList(customer, "CustomerId", "Name", carPurchase.CustomerId);
+            ViewBag.SalesPersonId = new SelectList(_context.SalesPerson, "SalesPersonId", "Name", carPurchase.SalesPersonId);
+            return View(carPurchase);
+        }
+
+        // GET: CarPurchases/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var carPurchase = await _context.CarPurchase
+                .Include(c => c.Car)
+                .Include(c => c.Customer)
+                .Include(c => c.SalesPerson)
+                .FirstOrDefaultAsync(m => m.CarPurchaseId == id);
+            if (carPurchase == null)
+            {
+                return NotFound();
+            }
+
+            return View(carPurchase);
+        }
+
+        // POST: CarPurchases/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var carPurchase = await _context.CarPurchase.FindAsync(id);
+            _context.CarPurchase.Remove(carPurchase);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool CarPurchaseExists(int id)
+        {
+            return _context.CarPurchase.Any(e => e.CarPurchaseId == id);
+        }
     }
 }
