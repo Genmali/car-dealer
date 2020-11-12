@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CarDealer.Models.Car>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Make)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Extras)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecommendedPrice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Make)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Extras)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecommendedPrice)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.CarId">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
