@@ -19,8 +19,21 @@ namespace CarDealer.Controllers
             _context = context;
         }
 
+        private IQueryable<CarPurchase> DateFilter(IQueryable<CarPurchase> carPurchases, DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate.HasValue)
+            {
+                carPurchases = carPurchases.Where(c => c.OrderDate > startDate);
+            }else if (endDate.HasValue)
+            {
+                carPurchases = carPurchases.Where(c => c.OrderDate < endDate);
+            }
+
+            return carPurchases;
+        }
+
         // GET: CarPurchases
-        public async Task<IActionResult> Index(string carMake, string carModel, string salesPerson)
+        public async Task<IActionResult> Index(string carMake, string carModel, string salesPerson, DateTime? startDate, DateTime? endDate)
         {
             var carPurchases = from p in _context.CarPurchase
                                select p;
@@ -38,6 +51,8 @@ namespace CarDealer.Controllers
             {
                 carPurchases = carPurchases.Where(c => c.SalesPerson.Name.Contains(salesPerson)).OrderBy(c => c.SalesPerson.Name);
             }
+
+            carPurchases = DateFilter(carPurchases, startDate, endDate);
 
             carPurchases = carPurchases.Include(c => c.Car).Include(c => c.Customer).Include(c => c.SalesPerson);
 
