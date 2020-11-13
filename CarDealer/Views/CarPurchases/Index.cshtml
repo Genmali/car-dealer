@@ -11,12 +11,16 @@
 </p>
 <form asp-controller="CarPurchases" asp-action="Index" method="get">
     <p>
-        Car Make: <input type="text" name="CarMake">
-        <input type="submit" value="Filter" />
-        Car Model: <input type="text" name="CarModel">
-        <input type="submit" value="Filter" />
-        Sales Person: <input type="text" name="SalesPerson">
-        <input type="submit" value="Filter" />
+        <div style="margin: 10px;">
+            Car Make: <input style="margin-left: 20px" type="text" name="CarMake">
+            Car Model: <input type="text" name="CarModel">
+        </div>
+        <div style="margin: 10px;">
+            Sales Person: <input type="text" name="SalesPerson">
+        </div>
+        <div style="margin: 10px;">
+            <input type="submit" value="Apply Filters" /> <span> </span>
+        </div>
     </p>
 </form>
 <table class="table">
