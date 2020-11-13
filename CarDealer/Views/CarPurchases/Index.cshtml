@@ -49,27 +49,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Name) @Html.DisplayFor(modelItem => item.Customer.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Car.Make) @Html.DisplayFor(modelItem => item.Car.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePaid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SalesPerson.Name)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.CarPurchaseId">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Name) @Html.DisplayFor(modelItem => item.Customer.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Make) @Html.DisplayFor(modelItem => item.Car.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PricePaid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesPerson.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.CarPurchaseId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
