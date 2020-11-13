@@ -19,6 +19,10 @@
             Sales Person: <input type="text" name="SalesPerson">
         </div>
         <div style="margin: 10px;">
+            Start Date: <input style="margin-left: 17px; margin-right: 10px" type="date" id="startDate" name="startDate">
+            End Date: <input style="margin-left: 10px" type="date" id="endDate" name="endDate">
+        </div>
+        <div style="margin: 10px;">
             <input type="submit" value="Apply Filters" /> <span> </span>
         </div>
     </p>
@@ -45,27 +49,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Name) @Html.DisplayFor(modelItem => item.Customer.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Car.Make) @Html.DisplayFor(modelItem => item.Car.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePaid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SalesPerson.Name)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.CarPurchaseId">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Name) @Html.DisplayFor(modelItem => item.Customer.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Make) @Html.DisplayFor(modelItem => item.Car.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PricePaid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesPerson.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.CarPurchaseId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
