@@ -24,7 +24,7 @@ namespace CarDealer.Tests
         {
             var controller = new CarPurchasesController(in_memory_context);
 
-            var result = await controller.Index("", "", "") as ViewResult;
+            var result = await controller.Index("", "", "", null, null) as ViewResult;
             var processResult = result.Model as List<CarPurchase>;
 
             Assert.IsType<ViewResult>(result);
@@ -36,7 +36,7 @@ namespace CarDealer.Tests
         {
             var controller = new CarPurchasesController(in_memory_context);
 
-            var result = await controller.Index("Ford", "", "") as ViewResult;
+            var result = await controller.Index("Ford", "", "", null, null) as ViewResult;
             var processResult = result.Model as List<CarPurchase>;
 
             Assert.IsType<ViewResult>(result);
@@ -49,7 +49,7 @@ namespace CarDealer.Tests
         {
             var controller = new CarPurchasesController(in_memory_context);
 
-            var result = await controller.Index("", "GTR", "") as ViewResult;
+            var result = await controller.Index("", "GTR", "", null, null) as ViewResult;
             var processResult = result.Model as List<CarPurchase>;
 
             Assert.IsType<ViewResult>(result);
@@ -63,7 +63,7 @@ namespace CarDealer.Tests
         {
             var controller = new CarPurchasesController(in_memory_context);
 
-            var result = await controller.Index("", "", "Brian Tenning") as ViewResult;
+            var result = await controller.Index("", "", "Brian Tenning", null, null) as ViewResult;
             var processResult = result.Model as List<CarPurchase>;
 
             Assert.IsType<ViewResult>(result);
@@ -71,12 +71,52 @@ namespace CarDealer.Tests
             Assert.Equal("Jane", processResult.ElementAt(0).Customer.Name);
         }
 
+        [Fact(DisplayName = "CarPurchase_Index_Search_FromDate_Validate_CarMakeModels_Test")]
+        public async Task CarPurchase_Index_Search_FromDate_Validate_CarMakeModels_Test()
+        {
+            var controller = new CarPurchasesController(in_memory_context);
+
+            var result = await controller.Index("", "", "", DateTime.Parse("2020-1-1"), null) as ViewResult;
+            var processResult = result.Model as List<CarPurchase>;
+
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal(2, processResult.Count);
+            Assert.Equal("Chevrolet Corvette Stingray", processResult.ElementAt(0).Car.Make + " " + processResult.ElementAt(0).Car.Model);
+            Assert.Equal("Nissan GTR", processResult.ElementAt(1).Car.Make + " " + processResult.ElementAt(1).Car.Model);
+        }
+
+        [Fact(DisplayName = "CarPurchase_Index_Search_ToDate_Validate_CarMakeModel_Test")]
+        public async Task CarPurchase_Index_Search_ToDate_Validate_CarMakeModel_Test()
+        {
+            var controller = new CarPurchasesController(in_memory_context);
+
+            var result = await controller.Index("", "", "", null, DateTime.Parse("2019-6-2")) as ViewResult;
+            var processResult = result.Model as List<CarPurchase>;
+
+            Assert.IsType<ViewResult>(result);
+            Assert.Single(processResult);
+            Assert.Equal("Ford Mustang GTR", processResult.First().Car.Make + " " + processResult.First().Car.Model);
+        }
+
+        [Fact(DisplayName = "CarPurchase_Index_Search_FromToDate_Validate_CarMakeModels_Test")]
+        public async Task CarPurchase_Index_Search_FromToDate_Validate_CarMakeModels_Test()
+        {
+            var controller = new CarPurchasesController(in_memory_context);
+
+            var result = await controller.Index("", "", "", DateTime.Parse("2019-10-16"), DateTime.Parse("2020-4-1")) as ViewResult;
+            var processResult = result.Model as List<CarPurchase>;
+
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal(2, processResult.Count);
+            Assert.Equal("Chevrolet Corvette Stingray", processResult.First().Car.Make + " " + processResult.First().Car.Model);
+        }
+
         [Fact(DisplayName = "CarPurchase_Index_Search_All_Filters_Validate_CustomerName_Test")]
         public async Task CarPurchase_Index_Search_All_Filters_Validate_CustomerName_Test()
         {
             var controller = new CarPurchasesController(in_memory_context);
 
-            var result = await controller.Index("Ford", "GTR", "Michael Takoiu") as ViewResult;
+            var result = await controller.Index("Ford", "GTR", "Michael Takoiu", DateTime.Parse("2019-1-12"), DateTime.Parse("2019-3-12")) as ViewResult;
             var processResult = result.Model as List<CarPurchase>;
 
             Assert.IsType<ViewResult>(result);
