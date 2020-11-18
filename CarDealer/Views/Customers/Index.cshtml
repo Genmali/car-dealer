@@ -11,10 +11,15 @@
 </p>
 <form asp-controller="Customers" asp-action="Index" method="get">
     <p>
-        Name: <input type="text" name="NameSearch">
-        <input type="submit" value="Filter" />
-        Address: <input type="text" name="AddressSearch">
-        <input type="submit" value="Filter" />
+        <div style="margin: 10px;">
+            Name: <input style="margin-left: 15px" type="text" name="NameSearch">
+        </div>
+        <div style="margin: 10px;">
+            Address: <input type="text" name="AddressSearch">
+        </div>
+        <div style="margin: 10px;">
+            <input type="submit" value="Apply Filters" /> <span> </span>
+        </div>
     </p>
 </form>
 <table class="table">
